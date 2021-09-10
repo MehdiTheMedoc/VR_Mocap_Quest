@@ -102,23 +102,30 @@ public class PoseRecorder : MonoBehaviour
 
 foreach (BoneData bd in bones)
 {
-    outputScriptList.Add( @"    b = edit_bones.new('" + (bd.id) + @"')
+    outputScriptList.Add( @"    b = edit_bones.new('" + B(bd.id) + @"')
     b.head = "+ bd.startPosition.ToString("F5") + @"
     b.tail = "+ (bd.startPosition + Vector3.up*0.01f).ToString("F5")+@"
 ");
+    outputScriptList.Add( @"    b = edit_bones.new('" + B(bd.id)+"_visual" + @"')
+    b.head = "+ bd.startPosition.ToString("F5") + @"
+    b.tail = "+ (bd.startPosition + Vector3.up*0.01f).ToString("F5")+@"
+");
+if(bd.GetParent() != null){
+    outputScriptList.Add( @"    edit_bones['"+B(bd.id)+"_visual"+"'].parent = edit_bones['"+B(bd.id)+@"']
+");
+}
 }
 
-/*foreach (BoneData bd in bones)
+foreach (BoneData bdd in bones)
 {
-    if(bd.GetParent() != null){
-    //outputScriptList.Add("edit_bones['"+(bd.id)+"'].parent = edit_bones['"+(bd.GetParent().id)+@"']
-//");
-if(Vector3.Distance(bd.startPosition, bd.GetParent().startPosition) > 0.00001f){
- outputScriptList.Add(@"edit_bones['"+(bd.GetParent().id)+"'].tail = "+ bd.startPosition.ToString("F5")+@"
+    if(bdd.GetParent() != null){
+if(Vector3.Distance(bdd.startPosition, bdd.GetParent().startPosition) > 0.00001f){
+ outputScriptList.Add(@"
+    edit_bones['"+B(bdd.GetParent().id)+"_visual"+"'].tail = "+ bdd.startPosition.ToString("F5")+@"
 ");
 }
     }
-}*/
+}
 
 
      outputScriptList.Add(@"    action = bpy.data.actions.new(""Quest Mocap"")
@@ -130,7 +137,7 @@ outputScriptList.Add(@"    frameIndex = 0
 
     foreach (BoneData bd in bones)
 {
-     outputScriptList.Add(@"    thebone=skelly.pose.bones["+(bd.id) + @"]
+     outputScriptList.Add(@"    thebone=skelly.pose.bones['"+B(bd.id) + @"']
 ");
     for(int i=0; i<bd.rotations.Count; i++)
     {
@@ -226,6 +233,14 @@ outputScriptList.Add(@"    frameIndex = 0
             }
             return null;
         }
+    }
+
+    public string B(int id){
+        return B(id+"");
+    }
+
+    public string B(string id){
+        return "bone_"+id;
     }
 
 
