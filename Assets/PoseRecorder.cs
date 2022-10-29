@@ -92,26 +92,27 @@ public class PoseRecorder : MonoBehaviour
 # select it
     bpy.context.view_layer.objects.active = skelly
 
-# edit mode
-    bpy.ops.object.mode_set(mode='EDIT', toggle=False)
+    if(makeNewArmature):
+        # edit mode
+        bpy.ops.object.mode_set(mode='EDIT', toggle=False)
 
 
-# let's go and add some bones
-    edit_bones = skelly.data.edit_bones
+    # let's go and add some bones
+        edit_bones = skelly.data.edit_bones
 ");
 
 foreach (BoneData bd in bones)
 {
-    outputScriptList.Add( @"    b = edit_bones.new('" + B(bd.id) + @"')
+    outputScriptList.Add( @"        b = edit_bones.new('" + B(bd.id) + @"')
     b.head = "+ bd.startPosition.ToString("F5") + @"
     b.tail = "+ (bd.startPosition + Vector3.up*0.01f).ToString("F5")+@"
 ");
-    outputScriptList.Add( @"    b = edit_bones.new('" + B(bd.id)+"_visual" + @"')
+    outputScriptList.Add( @"        b = edit_bones.new('" + B(bd.id)+"_visual" + @"')
     b.head = "+ bd.startPosition.ToString("F5") + @"
     b.tail = "+ (bd.startPosition + Vector3.up*0.01f).ToString("F5")+@"
 ");
 if(bd.GetParent() != null){
-    outputScriptList.Add( @"    edit_bones['"+B(bd.id)+"_visual"+"'].parent = edit_bones['"+B(bd.id)+@"']
+    outputScriptList.Add( @"        edit_bones['"+B(bd.id)+"_visual"+"'].parent = edit_bones['"+B(bd.id)+@"']
 ");
 }
 }
@@ -121,7 +122,7 @@ foreach (BoneData bdd in bones)
     if(bdd.GetParent() != null){
 if(Vector3.Distance(bdd.startPosition, bdd.GetParent().startPosition) > 0.00001f){
  outputScriptList.Add(@"
-    edit_bones['"+B(bdd.GetParent().id)+"_visual"+"'].tail = "+ bdd.startPosition.ToString("F5")+@"
+        edit_bones['"+B(bdd.GetParent().id)+"_visual"+"'].tail = "+ bdd.startPosition.ToString("F5")+@"
 ");
 }
     }
@@ -256,10 +257,10 @@ class DialogOperator(bpy.types.Operator):
     bl_idname = ""object.dialog_operator""
     bl_label = ""VR Quest Mocap""
  
-    TempframeSkip = IntProperty(name=""Frame Skip"")
-    Tempframerate = IntProperty(name=""Blender Animation Framerate"")
-    tempCreateNewArmature = BoolProperty(name=""Create New Armature"")
-    tempArmatureName = StringProperty(name=""Armature Name"")
+    TempframeSkip : IntProperty(name=""Frame Skip"")
+    Tempframerate : IntProperty(name=""Blender Animation Framerate"")
+    tempCreateNewArmature : BoolProperty(name=""Create New Armature"")
+    tempArmatureName : StringProperty(name=""Armature Name"")
  
     def execute(self, context):
         global frameSkip, makeNewArmature, armatureName, framerate
@@ -273,6 +274,7 @@ class DialogOperator(bpy.types.Operator):
             
         GenerateAnimation()
         return {'FINISHED'}
+
  
     def invoke(self, context, event):
         global frameSkip, makeNewArmature, armatureName
