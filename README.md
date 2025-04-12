@@ -1,6 +1,6 @@
 **Oculus Quest Hands mocap**
 
-it's 5AM, I'm not sober, I'm on my phone and someone on YouTube asked for this, so the readme might be lacking
+it's 5AM, I'm not sober, I'm on my phone and someone on YouTube asked for this and I don't want to forget tomorrow. Understandably then the readme might be lacking
 
 
 
@@ -9,7 +9,7 @@ basically you install the apk on your headset, go in unknown sources and launch 
 you'll be in an empty room et you will be able to record the movements of your hands.
 controllers are not supported so you'll have to hold the "menu" gesture and the app will start recording. once you done, redo the same gesture.
 
-a .py file will be created, you'll just have to launch it in blender to have a rig playing your hands animation
+a .py file will be created in your headset, you can access it by USB file transfer with a PC. you'll then have to launch it in blender to have a rig playing your hands animation. 
 
 
 
