@@ -1,6 +1,6 @@
 **Oculus Quest Hands mocap**
 
-it's 5AM, I'm not sober, I'm on my phone and someone on YouTube asked for this and I don't want to forget tomorrow. Understandably then the readme might be lacking
+it's 5AM, I'm not sober, I'm on my phone and someone on YouTube asked for this and I don't want to risk forgetting tomorrow. Understandably then the readme might be lacking
 
 
 
